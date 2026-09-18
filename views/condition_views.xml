@@ -22,4 +22,23 @@
             </field>
         </record>
     </data>
+
+    <data noupdate="1">
+        <record id="cond_like_new" model="trade_in_program.condition">
+            <field name="condition">Like New</field>
+            <field name="multiplier">1.0</field>
+        </record>
+        <record id="cond_good" model="trade_in_program.condition">
+            <field name="condition">Good</field>
+            <field name="multiplier">0.7</field>
+        </record>
+        <record id="cond_damaged" model="trade_in_program.condition">
+            <field name="condition">Damaged</field>
+            <field name="multiplier">0.4</field>
+        </record>
+        <record id="cond_broken" model="trade_in_program.condition">
+            <field name="condition">Broken</field>
+            <field name="multiplier">0.1</field>
+        </record>
+    </data>
 </odoo>

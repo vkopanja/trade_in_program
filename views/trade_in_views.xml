@@ -1,0 +1,47 @@
+<odoo>
+    <data>
+
+        <record id="trade_in_view_tree" model="ir.ui.view">
+            <field name="name">trade_in_program.trade_in.tree</field>
+            <field name="model">trade_in_program.trade_in</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="partner_id"/>
+                    <field name="device_id"/>
+                    <field name="condition_id"/>
+                    <field name="offer_value"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="trade_in_view_form" model="ir.ui.view">
+            <field name="name">trade_in_program.trade_in.form</field>
+            <field name="model">trade_in_program.trade_in</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="partner_id"/>
+                                <field name="device_id" options="{'no_create': True}"/>
+                                <field name="condition_id" options="{'no_create': True}" widget="radio"/>
+                            </group>
+                            <group>
+                                <field name="base_value"/>
+                                <field name="multiplier"/>
+                                <field name="offer_value"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="trade_in_action" model="ir.actions.act_window">
+            <field name="name">Trade In</field>
+            <field name="res_model">trade_in_program.trade_in</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class TradeIn(models.Model):
@@ -26,8 +26,8 @@ class TradeIn(models.Model):
                     .browse(vals['device_id']).base_trade_in_value
             if vals.get('condition_id') and not vals.get('multiplier'):
                 vals['multiplier'] = self.env['trade_in_program.condition'] \
-                    .browse(vals['condition_id']).value_multiplier
-            return super().create(vals_list)
+                    .browse(vals['condition_id']).multiplier
+        return super().create(vals_list)
 
     @api.depends('base_value', 'multiplier')
     def _compute_offer(self):

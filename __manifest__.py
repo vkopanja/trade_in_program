@@ -25,6 +25,7 @@
         'security/ir.model.access.csv',
         'views/condition_views.xml',
         'views/device_views.xml',
+        'views/trade_in_views.xml',
         'views/trade_in_menus.xml',
     ],
     # only loaded in demonstration mode

@@ -7,5 +7,8 @@
 
         <menuitem id="trade_in_menu_list_device" name="Devices"
                   parent="trade_in_menu_root" action="device_action"/>
+
+        <menuitem id="trade_in_menu_list_trade_in" name="Trade-Ins"
+                  parent="trade_in_menu_root" action="trade_in_action"/>
     </data>
 </odoo>
