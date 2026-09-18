@@ -2,55 +2,64 @@
     <data>
 
         <template id="trade_in_program.trade_in_form" name="Trade-In Request">
-            <t t-call="web.frontend_layout">
+            <t t-call="website.layout">
                 <div class="container mt-4">
-                    <h1>Request a Trade-In Offer</h1>
-                    <div t-if="reference" class="alert alert-success mt-3" role="alert">
-                        <p>Thank you for submitting your trade-in request. We will be in touch shortly.</p>
-                        <p>Your reference number is <strong><t t-esc="reference"/></strong>.</p>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <h1>Request a Trade-In Offer</h1>
+                            <div t-if="reference" class="alert alert-success mt-3 col-lg-8" role="alert">
+                                <p>Thank you for submitting your trade-in request. We will be in touch shortly.</p>
+                                <p>Your reference number is
+                                    <strong>
+                                        <t t-esc="reference"/>
+                                    </strong>
+                                </p>
+                            </div>
+                            <div t-if="error_message" class="alert alert-danger mt-3 col-lg-8" role="alert"
+                                 t-esc="error_message"/>
+                            <form action="/trade-in/submit" id="trade_in_form" method="post" class="mt-3">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                <div class="mb-3 col-lg-8">
+                                    <label class="form-label">Customer Name</label>
+                                    <input type="text" name="customer_name" class="form-control" required="required"/>
+                                </div>
+
+                                <div class="mb-3 col-lg-8">
+                                    <label class="form-label">Customer Email</label>
+                                    <input type="email" name="customer_email" class="form-control" required="required"/>
+                                </div>
+
+                                <div class="mb-3 col-lg-8">
+                                    <label class="form-label">Device</label>
+                                    <select name="device_id" class="form-select" required="required">
+                                        <option value="">Select a device</option>
+                                        <t t-foreach="devices" t-as="d">
+                                            <option t-att-value="d.id" t-esc="d.model_name"/>
+                                        </t>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3 col-lg-8">
+                                    <label class="form-label">Condition</label>
+                                    <select name="condition_id" class="form-select" required="required">
+                                        <option value="">Select a condition</option>
+                                        <t t-foreach="conditions" t-as="c">
+                                            <option t-att-value="c.id" t-esc="c.condition"/>
+                                        </t>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3 col-lg-8">
+                                    <p class="mt-3">Estimated value:
+                                        <strong id="quote">-</strong>
+                                    </p>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary mb-4">Get Offer</button>
+                            </form>
+                        </div>
                     </div>
-                    <div t-if="error_message" class="alert alert-danger mt-3" role="alert" t-esc="error_message"/>
-                    <form action="/trade-in/submit" id="trade_in_form" method="post" class="mt-3">
-                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-
-                        <div class="mb-3">
-                            <label class="form-label">Customer Name</label>
-                            <input type="text" name="customer_name" class="form-control" required="required"/>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Customer Email</label>
-                            <input type="email" name="customer_email" class="form-control" required="required"/>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Device</label>
-                            <select name="device_id" class="form-select" required="required">
-                                <option value="">Select a device</option>
-                                <t t-foreach="devices" t-as="d">
-                                    <option t-att-value="d.id" t-esc="d.model_name"/>
-                                </t>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Condition</label>
-                            <select name="condition_id" class="form-select" required="required">
-                                <option value="">Select a condition</option>
-                                <t t-foreach="conditions" t-as="c">
-                                    <option t-att-value="c.id" t-esc="c.condition"/>
-                                </t>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <p class="mt-3">Estimated value:
-                                <strong id="quote">-</strong>
-                            </p>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Get Offer</button>
-                    </form>
                 </div>
             </t>
         </template>

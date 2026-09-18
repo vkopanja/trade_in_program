@@ -1,7 +1,7 @@
 from datetime import date
 from enum import Enum
 
-from odoo import models, fields, api
+from odoo import _, models, fields, api
 
 
 class Status(str, Enum):
@@ -18,6 +18,9 @@ class TradeIn(models.Model):
     _name = 'trade_in_program.trade_in'
     _description = 'Trade-In model for managing trade-in offers and requests'
     _rec_name = 'reference'
+    _sql_constraints = [
+        ('reference_unique', 'unique(reference)', 'Reference must be unique')
+    ]
 
     partner_id = fields.Many2one('res.partner', string='Customer', required=True)
     partner_email = fields.Char(related='partner_id.email', string='Email')
@@ -27,7 +30,10 @@ class TradeIn(models.Model):
     base_value = fields.Float(readonly=True, copy=False)
     multiplier = fields.Float(readonly=True, copy=False)
     offer_value = fields.Float(compute='_compute_offer', store=True)
-    reference = fields.Char(string='Reference')
+    reference = fields.Char(
+        string='Reference', required=True, readonly=True, copy=False, index=True,
+        default=lambda self: _('New'),
+    )
     status = fields.Selection(
         Status.to_selection(),
         string='Status',
@@ -41,12 +47,10 @@ class TradeIn(models.Model):
 
     @api.constrains('status', 'rejection_reason')
     def _check_rejection_reason(self):
-        if self.env.context.get('skip_rejection_check'):
-            return
         for rec in self:
             if rec.status == Status.REJECTED.value and not rec.rejection_reason:
                 raise models.ValidationError(
-                    "Rejection reason is required when the status is set to 'Rejected'.")
+                    "A rejection reason is required when the status is set to 'Rejected'.")
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -59,11 +63,11 @@ class TradeIn(models.Model):
                     .browse(vals['condition_id']).multiplier
             if not vals.get('status'):
                 vals['status'] = Status.NEW.value
+            if vals.get('reference', _('New')) == _('New'):
+                vals['reference'] = self.env['ir.sequence'].next_by_code(
+                    'trade_in_program.trade_in') or _('New')
 
-        created_models = super().create(vals_list)
-        for model in created_models:
-            model.write({'reference': self.generate_reference(model.id)})
-        return created_models
+        return super().create(vals_list)
 
     @api.model
     def _calculate_offer(self, base_value, multiplier):
@@ -74,22 +78,18 @@ class TradeIn(models.Model):
         for rec in self:
             rec.offer_value = rec._calculate_offer(rec.base_value, rec.multiplier)
 
-    @staticmethod
-    def generate_reference(value):
-        return f"TI/{date.today().year}/{str(value).zfill(5)}"
-
     def action_approve(self):
         self.status = Status.ACCEPTED.value
         self.rejection_reason = None
         return True
 
     def action_reject(self):
-        self = self.with_context(skip_rejection_check=True)
-        self.status = Status.REJECTED.value
+        self.ensure_one()
         return {
             'type': 'ir.actions.act_window',
-            'res_model': 'trade_in_program.trade_in',
-            'res_id': self.id,
+            'name': _('Reject Trade-In'),
+            'res_model': 'trade_in_program.reject.wizard',
             'view_mode': 'form',
             'target': 'new',
+            'context': {'default_trade_in_id': self.id},
         }

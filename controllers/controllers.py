@@ -15,7 +15,7 @@ ERROR_MESSAGES = {
 
 class TradeInProgram(http.Controller):
 
-    @http.route('/trade-in', type='http', auth='public', website=False, csrf=True)
+    @http.route('/trade-in', type='http', auth='public', website=True, csrf=True)
     def form(self, submitted=None, error=None, **kw):
         devices = request.env['trade_in_program.device'].sudo().search([])
         conditions = request.env['trade_in_program.condition'].sudo().search([])

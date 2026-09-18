@@ -7,6 +7,7 @@
                 <tree>
                     <field name="condition"/>
                     <field name="multiplier"/>
+                    <field name="multiplier" string="Percentage" widget="percentage" options="{'digits': [16, 2]}"/>
                 </tree>
             </field>
         </record>

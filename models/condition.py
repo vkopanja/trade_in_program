@@ -7,4 +7,5 @@ class Condition(models.Model):
     _rec_name = 'condition'
 
     condition = fields.Char(string='Condition', help='Name for the device condition, e.g. Like New, Used...')
-    multiplier = fields.Float(string='Multiplier', help='Factor by which the base trade-in value is adjusted based on condition')
+    multiplier = fields.Float(string='Multiplier',
+                              help='Factor by which the base trade-in value is adjusted based on condition')
