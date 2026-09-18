@@ -10,6 +10,9 @@
                     <field name="device_id"/>
                     <field name="condition_id"/>
                     <field name="offer_value"/>
+                    <field name="reference"/>
+                    <field name="status"/>
+                    <field name="rejection_reason"/>
                 </tree>
             </field>
         </record>
@@ -30,6 +33,11 @@
                                 <field name="base_value"/>
                                 <field name="multiplier"/>
                                 <field name="offer_value"/>
+                            </group>
+                            <group>
+                                <field name="reference" readonly="true"/>
+                                <field name="status"/>
+                                <field name="rejection_reason"/>
                             </group>
                         </group>
                     </sheet>

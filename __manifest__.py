@@ -15,10 +15,9 @@
     'website': "https://github.com/vkopanja",
 
     'category': 'Services',
-    'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base', 'web'],
 
     # always loaded
     'data': [
@@ -27,6 +26,7 @@
         'views/device_views.xml',
         'views/trade_in_views.xml',
         'views/trade_in_menus.xml',
+        'views/trade_in_customer_templates.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
