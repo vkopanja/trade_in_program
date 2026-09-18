@@ -28,6 +28,11 @@
         'views/trade_in_menus.xml',
         'views/trade_in_customer_templates.xml',
     ],
+    'assets': {
+        'web.assets_frontend': [
+            'trade_in_program/static/src/js/trade_in_form.js',
+        ],
+    },
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',

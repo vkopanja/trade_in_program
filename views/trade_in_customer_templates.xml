@@ -5,6 +5,11 @@
             <t t-call="web.frontend_layout">
                 <div class="container mt-4">
                     <h1>Request a Trade-In Offer</h1>
+                    <div t-if="reference" class="alert alert-success mt-3" role="alert">
+                        <p>Thank you for submitting your trade-in request. We will be in touch shortly.</p>
+                        <p>Your reference number is <strong><t t-esc="reference"/></strong>.</p>
+                    </div>
+                    <div t-if="error_message" class="alert alert-danger mt-3" role="alert" t-esc="error_message"/>
                     <form action="/trade-in/submit" id="trade_in_form" method="post" class="mt-3">
                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
 
@@ -47,40 +52,6 @@
                         <button type="submit" class="btn btn-primary">Get Offer</button>
                     </form>
                 </div>
-                <script type="text/javascript">
-                    document.addEventListener('DOMContentLoaded', function () {
-                        const form = document.getElementById('trade_in_form');
-                        const out = document.getElementById('quote');
-
-                        async function refreshQuote() {
-                            const device = form.device_id.value;
-                            const condition = form.condition_id.value;
-
-                            if (!device || !condition) {
-                                out.textContent = '-';
-                                return;
-                            }
-
-                            const res = await fetch('/trade-in/quote', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    jsonrpc: "2.0",
-                                    method: "call",
-                                    params: {device_id: device, condition_id: condition},
-                                }),
-                            });
-                            const data = await res.json();
-                            out.textContent = data.result &amp;&amp; data.result.ok
-                                ? data.result.value.toFixed(2) : '-';
-                        }
-
-                        form.device_id.addEventListener('change', refreshQuote)
-                        form.condition_id.addEventListener('change', refreshQuote)
-                    });
-                </script>
             </t>
         </template>
 

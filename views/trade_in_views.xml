@@ -7,12 +7,15 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="partner_id"/>
+                    <field name="partner_email"/>
                     <field name="device_id"/>
                     <field name="condition_id"/>
                     <field name="offer_value"/>
                     <field name="reference"/>
                     <field name="status"/>
                     <field name="rejection_reason"/>
+                    <button name="action_approve" type="object" string="Approve" icon="fa-check"/>
+                    <button name="action_reject" type="object" string="Reject" icon="fa-times"/>
                 </tree>
             </field>
         </record>
