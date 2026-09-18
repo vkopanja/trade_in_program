@@ -1,0 +1,25 @@
+<odoo>
+    <data>
+        <record id="trade_in_view_device_tree" model="ir.ui.view">
+            <field name="name">trade_in_program.device.tree</field>
+            <field name="model">trade_in_program.device</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="model_name"/>
+                    <field name="base_trade_in_value"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="device_action" model="ir.actions.act_window">
+            <field name="name">Devices</field>
+            <field name="res_model">trade_in_program.device</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Device
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

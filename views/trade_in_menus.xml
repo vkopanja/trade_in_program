@@ -1,0 +1,11 @@
+<odoo>
+    <data>
+        <menuitem id="trade_in_menu_root" name="Trade-In"/>
+
+        <menuitem id="trade_in_menu_list_condition" name="Conditions"
+                  parent="trade_in_menu_root" action="condition_action"/>
+
+        <menuitem id="trade_in_menu_list_device" name="Devices"
+                  parent="trade_in_menu_root" action="device_action"/>
+    </data>
+</odoo>

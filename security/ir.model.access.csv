@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_trade_in_program_condition,trade_in_program.condition all,model_trade_in_program_condition,base.group_user,1,1,1,1
+access_trade_in_program_device,trade_in_program.device all,model_trade_in_program_device,base.group_user,1,1,1,1
