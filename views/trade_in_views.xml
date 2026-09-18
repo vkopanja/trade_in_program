@@ -5,17 +5,18 @@
             <field name="name">trade_in_program.trade_in.tree</field>
             <field name="model">trade_in_program.trade_in</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree decoration-success="status == 'accepted'" decoration-danger="status == 'rejected'">
+                    <field name="reference"/>
                     <field name="partner_id"/>
                     <field name="partner_email"/>
                     <field name="device_id"/>
                     <field name="condition_id"/>
                     <field name="offer_value"/>
-                    <field name="reference"/>
-                    <field name="status"/>
-                    <field name="rejection_reason"/>
-                    <button name="action_approve" type="object" string="Approve" icon="fa-check"/>
-                    <button name="action_reject" type="object" string="Reject" icon="fa-times"/>
+                    <field name="status" widget="badge"/>
+                    <button name="action_approve" type="object" string="Approve" icon="fa-check"
+                            attrs="{'invisible': [('status', '!=', 'new')]}"/>
+                    <button name="action_reject" type="object" string="Reject" icon="fa-times"
+                            attrs="{'invisible': [('status', '!=', 'new')]}"/>
                 </tree>
             </field>
         </record>
@@ -25,22 +26,35 @@
             <field name="model">trade_in_program.trade_in</field>
             <field name="arch" type="xml">
                 <form>
+                    <header>
+                        <button name="action_approve" type="object" string="Approve" class="btn-primary"
+                                attrs="{'invisible': [('status', '!=', 'new')]}"/>
+                        <button name="action_reject" type="object" string="Reject"
+                                attrs="{'invisible': [('status', '!=', 'new')]}"/>
+                        <field name="status" widget="statusbar"/>
+                    </header>
                     <sheet>
+                        <div class="oe_title">
+                            <h1><field name="reference"/></h1>
+                        </div>
                         <group>
-                            <group>
-                                <field name="partner_id"/>
-                                <field name="device_id" options="{'no_create': True}"/>
-                                <field name="condition_id" options="{'no_create': True}" widget="radio"/>
+                            <group string="Customer">
+                                <field name="partner_id" attrs="{'readonly': [('status', '!=', 'new')]}"/>
+                                <field name="partner_email"/>
                             </group>
-                            <group>
-                                <field name="base_value"/>
-                                <field name="multiplier"/>
+                            <group string="Device">
+                                <field name="device_id" options="{'no_create': True}"
+                                       attrs="{'readonly': [('status', '!=', 'new')]}"/>
+                                <field name="condition_id" options="{'no_create': True}" widget="radio"
+                                       attrs="{'readonly': [('status', '!=', 'new')]}"/>
+                            </group>
+                            <group string="Valuation">
+                                <field name="base_value" force_save="1"/>
+                                <field name="multiplier" widget="percentage" force_save="1"/>
                                 <field name="offer_value"/>
                             </group>
-                            <group>
-                                <field name="reference" readonly="true"/>
-                                <field name="status"/>
-                                <field name="rejection_reason"/>
+                            <group string="Rejection" attrs="{'invisible': [('status', '!=', 'rejected')]}">
+                                <field name="rejection_reason" readonly="1" nolabel="1" colspan="2"/>
                             </group>
                         </group>
                     </sheet>
@@ -48,10 +62,31 @@
             </field>
         </record>
 
+        <record id="trade_in_view_search" model="ir.ui.view">
+            <field name="name">trade_in_program.trade_in.search</field>
+            <field name="model">trade_in_program.trade_in</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="reference"/>
+                    <field name="partner_id"/>
+                    <field name="device_id"/>
+                    <filter name="filter_new" string="New" domain="[('status', '=', 'new')]"/>
+                    <filter name="filter_accepted" string="Accepted" domain="[('status', '=', 'accepted')]"/>
+                    <filter name="filter_rejected" string="Rejected" domain="[('status', '=', 'rejected')]"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_status" string="Status" context="{'group_by': 'status'}"/>
+                        <filter name="group_by_device" string="Device" context="{'group_by': 'device_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
         <record id="trade_in_action" model="ir.actions.act_window">
-            <field name="name">Trade In</field>
+            <field name="name">Trade-In Requests</field>
             <field name="res_model">trade_in_program.trade_in</field>
             <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="trade_in_view_search"/>
+            <field name="context">{'search_default_filter_new': 1}</field>
         </record>
 
     </data>

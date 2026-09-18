@@ -2,6 +2,7 @@ from datetime import date
 from enum import Enum
 
 from odoo import _, models, fields, api
+from odoo.exceptions import UserError
 
 
 class Status(str, Enum):
@@ -79,9 +80,9 @@ class TradeIn(models.Model):
             rec.offer_value = rec._calculate_offer(rec.base_value, rec.multiplier)
 
     def action_approve(self):
-        self.status = Status.ACCEPTED.value
-        self.rejection_reason = None
-        return True
+        if self.filtered(lambda r: r.status != Status.NEW.value):
+            raise UserError(_("Only new requests can be approved."))
+        self.write({'status': Status.ACCEPTED.value})
 
     def action_reject(self):
         self.ensure_one()
