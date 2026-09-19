@@ -81,7 +81,7 @@ need a restart unless the `watchdog` package is installed.
 1. Log in as the administrator. The installation adds the admin to the
    *Trade-In / Manager* group.
 2. Open `http://localhost:8069/trade-in`. Choose a device and a condition, and
-   the estimate appears (`315.00` for an *iPhone 14* in *Good* condition, which
+   the estimate appears (`€315.00` for an *iPhone 14* in *Good* condition, which
    pays 70% of 450). Enter a name and email, then click **Get Offer**.
 3. The page shows a confirmation with the reference number, for example
    `TI/2026/00004`.
@@ -115,7 +115,7 @@ Go to **Trade-In → Configuration → Devices** (managers only).
 |---------------------|---------|
 | Device Name         | Name shown to customers, e.g. *Samsung Galaxy S21* |
 | Base Trade-In Value | Payout for a device in *Like New* condition (100%) |
-| Active              | Archived devices disappear from the website form and can no longer be quoted or submitted |
+| Active              | Archived devices disappear from the website form and can no longer be quoted or submitted. With no active devices, the page says that trade-ins are not accepted at the moment. |
 
 ### Conditions
 
@@ -175,6 +175,10 @@ as the customer entered them, plus a link to that contact.
 
 When staff create a request in the backoffice, the name and email are filled
 in from the chosen contact and can be edited.
+
+Contact forms have a **Trade-Ins** smart button with the number of requests
+linked to that contact. It opens all of them, whatever their state, and only
+Trade-In users and managers see it.
 
 ## Reference numbers
 
@@ -285,17 +289,13 @@ when the device is archived.
   `search()`, which skips archived records, and the quote and submit routes
   share the same helper, so they cannot disagree.
 - **Frontend code in the asset bundle.** The live estimate and button handling
-  are a `publicWidget` registered in `web.assets_frontend`, with no script in
-  the template.
-
-## Not done yet
-
-These PDF requirements are still open:
-
-- **Smart button on contacts** showing a contact's trade-in requests.
-- **SCSS**: the page uses Bootstrap classes only; there is no stylesheet in
-  the module yet. The form also shows an empty device list instead of a
-  message when no devices are active.
+  are a `publicWidget`, and the page's few styles are a small SCSS file. Both
+  are registered in `web.assets_frontend`, with no script or style in the
+  template. The styles are scoped under `.o_trade_in` and use Bootstrap
+  variables, so they follow the website theme and cannot affect other pages.
+- **An empty state instead of an empty form.** When no device is active, or no
+  condition exists, the page shows a short message instead of a form that
+  cannot be submitted.
 
 ## Known limitations
 
@@ -313,7 +313,8 @@ These PDF requirements are still open:
   contact's email, and the request is linked to that contact. Nothing is
   exposed to the visitor, and the request keeps the typed name and email so
   staff can spot the mismatch, but emails are not verified.
-- **No currency.** Values are plain numbers, not monetary amounts.
+- **Fixed currency.** The website shows estimates with a € sign, but values are
+  stored as plain numbers, not as monetary amounts in the company currency.
 - **No spam protection** such as reCAPTCHA on the public form.
 - **One message for both dropdowns.** An invalid device or condition shows the
   same message under both fields.
@@ -347,7 +348,8 @@ I used Claude (Anthropic) as an assistant throughout the project:
   statusbar and search view; the user and manager groups with their access
   rules and menus; the double-submit protection (token, savepoint and button
   handling); the percentage-based condition list, the `state` rename and the
-  stored customer details; the demo data; and this README.
+  stored customer details; the demo data; the smart button on contacts; the
+  stylesheet and empty-state message; and this README.
 - **Written by me with the assistant's guidance and reviews:** the yearly
   reference sequence, the reject wizard, the switch to the website layout,
   and the server-side validation in the controller and template.
@@ -366,14 +368,18 @@ trade_in_program/
 ├── models/
 │   ├── condition.py                  # condition grades and payout
 │   ├── device.py
+│   ├── res_partner.py                # Trade-Ins count and smart button action on contacts
 │   └── trade_in.py                   # requests: state, pricing, approve/reject
 ├── security/
 │   ├── trade_in_security.xml         # Trade-In category, User and Manager groups
 │   └── ir.model.access.csv
-├── static/src/js/trade_in_form.js    # live estimate and submit button handling
+├── static/src/
+│   ├── js/trade_in_form.js           # live estimate and submit button handling
+│   └── scss/trade_in.scss            # estimate box and phone-width submit button
 ├── views/
 │   ├── condition_views.xml           # also installs the default conditions
 │   ├── device_views.xml
+│   ├── res_partner_views.xml         # adds the smart button to the contact form
 │   ├── trade_in_customer_templates.xml
 │   ├── trade_in_menus.xml
 │   └── trade_in_views.xml

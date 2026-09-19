@@ -37,7 +37,7 @@ publicWidget.registry.TradeInQuote = publicWidget.Widget.extend({
             route: '/trade-in/quote',
             params: {device_id: device, condition_id: condition},
         });
-        out.textContent = result.ok ? result.value.toFixed(2) : '-';
+        out.textContent = result.ok ? `€${result.value.toFixed(2)}` : '-';
     },
 
     // The browser only fires submit once its own validation has passed, so the button never stays stuck.

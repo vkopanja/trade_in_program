@@ -17,10 +17,8 @@
     'category': 'Services',
     'license': 'LGPL-3',
 
-    # any module necessary for this one to work correctly
     'depends': ['website'],
 
-    # always loaded
     'data': [
         'security/trade_in_security.xml',
         'security/ir.model.access.csv',
@@ -29,15 +27,16 @@
         'views/condition_views.xml',
         'views/device_views.xml',
         'views/trade_in_views.xml',
+        'views/res_partner_views.xml',
         'views/trade_in_menus.xml',
         'views/trade_in_customer_templates.xml',
     ],
     'assets': {
         'web.assets_frontend': [
             'trade_in_program/static/src/js/trade_in_form.js',
+            'trade_in_program/static/src/scss/trade_in.scss',
         ],
     },
-    # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
     ],

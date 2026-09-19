@@ -23,11 +23,8 @@ ERROR_MESSAGES = {
 class TradeInProgram(http.Controller):
 
     @http.route('/trade-in', type='http', auth='public', website=True, csrf=True)
-    def form(self, submitted=None, error=None, **kw):
-        return self._render_form(
-            reference=self._find_submitted_reference(submitted),
-            error_message=ERROR_MESSAGES.get(error, ERROR_MESSAGES['invalid']) if error else None,
-        )
+    def form(self, submitted=None, **kw):
+        return self._render_form(reference=self._find_submitted_reference(submitted))
 
     @http.route("/trade-in/submit", type='http', auth='public', methods=['POST'], website=True, csrf=True)
     def submit(self, **post):

@@ -3,25 +3,24 @@
 
         <template id="trade_in_program.trade_in_form" name="Trade-In Request">
             <t t-call="website.layout">
-                <div class="container mt-4">
+                <div class="container o_trade_in my-4">
                     <div class="row justify-content-center">
                         <div class="col-lg-8">
                             <h1>Request a Trade-In Offer</h1>
-                            <div t-if="reference" class="alert alert-success mt-3 col-lg-8" role="alert">
+                            <div t-if="reference" class="alert alert-success mt-3" role="alert">
                                 <p>Thank you for submitting your trade-in request. We will be in touch shortly.</p>
-                                <p>Your reference number is
+                                <p class="mb-0">Your reference number is
                                     <strong>
                                         <t t-esc="reference"/>
                                     </strong>
                                 </p>
                             </div>
-                            <div t-if="error_message" class="alert alert-danger mt-3 col-lg-8" role="alert"
-                                 t-esc="error_message"/>
-                            <form action="/trade-in/submit" id="trade_in_form" method="post" class="mt-3">
+                            <form t-if="devices and conditions" action="/trade-in/submit" id="trade_in_form"
+                                  method="post" class="mt-3">
                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 <input type="hidden" name="submission_token" t-att-value="submission_token"/>
 
-                                <div class="mb-3 col-lg-8">
+                                <div class="mb-3">
                                     <label class="form-label">Customer Name</label>
                                     <input type="text" name="customer_name" required="required"
                                            t-att-value="form_values.get('customer_name')"
@@ -31,7 +30,7 @@
                                          t-esc="form_errors['customer_name']"/>
                                 </div>
 
-                                <div class="mb-3 col-lg-8">
+                                <div class="mb-3">
                                     <label class="form-label">Customer Email</label>
                                     <input type="email" name="customer_email" required="required"
                                            t-att-value="form_values.get('customer_email')"
@@ -40,7 +39,7 @@
                                          t-esc="form_errors['email']"/>
                                 </div>
 
-                                <div class="mb-3 col-lg-8">
+                                <div class="mb-3">
                                     <label class="form-label">Device</label>
                                     <select name="device_id" required="required"
                                             t-attf-class="form-select #{'is-invalid' if form_errors.get('invalid') else ''}">
@@ -55,7 +54,7 @@
                                          t-esc="form_errors['invalid']"/>
                                 </div>
 
-                                <div class="mb-3 col-lg-8">
+                                <div class="mb-3">
                                     <label class="form-label">Condition</label>
                                     <select name="condition_id" required="required"
                                             t-attf-class="form-select #{'is-invalid' if form_errors.get('invalid') else ''}">
@@ -70,14 +69,16 @@
                                          t-esc="form_errors['invalid']"/>
                                 </div>
 
-                                <div class="mb-3 col-lg-8">
-                                    <p class="mt-3">Estimated value:
-                                        <strong id="quote">-</strong>
-                                    </p>
+                                <div class="o_trade_in_estimate mb-3">
+                                    <span>Estimated value</span>
+                                    <strong id="quote" class="o_trade_in_quote">-</strong>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary mb-4">Get Offer</button>
+                                <button type="submit" class="btn btn-primary o_trade_in_submit">Get Offer</button>
                             </form>
+                            <div t-else="" class="alert alert-info mt-3" role="status">
+                                We are not accepting trade-ins at the moment. Please check back soon.
+                            </div>
                         </div>
                     </div>
                 </div>

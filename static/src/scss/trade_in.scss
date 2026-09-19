@@ -1,0 +1,24 @@
+.o_trade_in {
+    .o_trade_in_estimate {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        padding: $spacer;
+        border: $border-width solid $border-color;
+        border-radius: $border-radius;
+        background-color: $gray-100;
+    }
+
+    .o_trade_in_quote {
+        font-size: $h3-font-size;
+    }
+
+    // Full-width button on phones, where it is easier to tap
+    .o_trade_in_submit {
+        width: 100%;
+
+        @include media-breakpoint-up(md) {
+            width: auto;
+        }
+    }
+}
