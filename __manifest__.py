@@ -12,7 +12,7 @@
     """,
 
     'author': "Vedran Kopanja",
-    'website': "https://github.com/vkopanja",
+    'website': "https://github.com/vkopanja/trade_in_program",
 
     'category': 'Services',
     'license': 'LGPL-3',
