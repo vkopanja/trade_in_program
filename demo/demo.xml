@@ -1,30 +1,71 @@
 <odoo>
+    <!-- Marc Demo processes requests, so reviewers can log in as a Trade-In User (demo / demo) -->
     <data>
-<!--
-          <record id="object0" model="trade_in_program.trade_in_program">
-            <field name="name">Object 0</field>
-            <field name="value">0</field>
-          </record>
+        <record id="base.user_demo" model="res.users">
+            <field name="groups_id" eval="[(4, ref('group_trade_in_user'))]"/>
+        </record>
+    </data>
 
-          <record id="object1" model="trade_in_program.trade_in_program">
-            <field name="name">Object 1</field>
-            <field name="value">10</field>
-          </record>
+    <data noupdate="1">
 
-          <record id="object2" model="trade_in_program.trade_in_program">
-            <field name="name">Object 2</field>
-            <field name="value">20</field>
-          </record>
+        <record id="demo_device_iphone_14" model="trade_in_program.device">
+            <field name="model_name">iPhone 14</field>
+            <field name="base_trade_in_value">450</field>
+        </record>
+        <record id="demo_device_iphone_12" model="trade_in_program.device">
+            <field name="model_name">iPhone 12</field>
+            <field name="base_trade_in_value">250</field>
+        </record>
+        <record id="demo_device_galaxy_s23" model="trade_in_program.device">
+            <field name="model_name">Samsung Galaxy S23</field>
+            <field name="base_trade_in_value">400</field>
+        </record>
+        <record id="demo_device_pixel_7" model="trade_in_program.device">
+            <field name="model_name">Google Pixel 7</field>
+            <field name="base_trade_in_value">220</field>
+        </record>
+        <record id="demo_device_macbook_air_m1" model="trade_in_program.device">
+            <field name="model_name">MacBook Air M1</field>
+            <field name="base_trade_in_value">500</field>
+        </record>
+        <record id="demo_device_ipad_9" model="trade_in_program.device">
+            <field name="model_name">iPad (9th generation)</field>
+            <field name="base_trade_in_value">150</field>
+        </record>
+        <!-- Archived: no longer accepted, so it is hidden from the website form -->
+        <record id="demo_device_iphone_8" model="trade_in_program.device">
+            <field name="model_name">iPhone 8</field>
+            <field name="base_trade_in_value">60</field>
+            <field name="active" eval="False"/>
+        </record>
 
-          <record id="object3" model="trade_in_program.trade_in_program">
-            <field name="name">Object 3</field>
-            <field name="value">30</field>
-          </record>
+        <record id="demo_partner_jane" model="res.partner">
+            <field name="name">Jane Cooper</field>
+            <field name="email">jane.cooper@example.com</field>
+        </record>
+        <record id="demo_partner_tom" model="res.partner">
+            <field name="name">Tom Novak</field>
+            <field name="email">tom.novak@example.com</field>
+        </record>
 
-          <record id="object4" model="trade_in_program.trade_in_program">
-            <field name="name">Object 4</field>
-            <field name="value">40</field>
-          </record>
--->
+        <record id="demo_trade_in_new" model="trade_in_program.trade_in">
+            <field name="partner_id" ref="demo_partner_jane"/>
+            <field name="device_id" ref="demo_device_iphone_14"/>
+            <field name="condition_id" ref="cond_good"/>
+        </record>
+        <record id="demo_trade_in_approved" model="trade_in_program.trade_in">
+            <field name="partner_id" ref="demo_partner_tom"/>
+            <field name="device_id" ref="demo_device_galaxy_s23"/>
+            <field name="condition_id" ref="cond_like_new"/>
+            <field name="state">approved</field>
+        </record>
+        <record id="demo_trade_in_rejected" model="trade_in_program.trade_in">
+            <field name="partner_id" ref="demo_partner_jane"/>
+            <field name="device_id" ref="demo_device_pixel_7"/>
+            <field name="condition_id" ref="cond_broken"/>
+            <field name="state">rejected</field>
+            <field name="rejection_reason">The device is reported as lost (IMEI blacklisted).</field>
+        </record>
+
     </data>
 </odoo>

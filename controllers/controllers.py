@@ -69,6 +69,8 @@ class TradeInProgram(http.Controller):
 
                 TradeIn.create({
                     'partner_id': partner.id,
+                    'customer_name': name,
+                    'customer_email': email,
                     'device_id': device.id,
                     'condition_id': condition.id,
                     'submission_token': token,

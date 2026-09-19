@@ -4,10 +4,10 @@
             <field name="name">trade_in_program.condition.tree</field>
             <field name="model">trade_in_program.condition</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree editable="bottom">
+                    <field name="sequence" widget="handle"/>
                     <field name="condition"/>
-                    <field name="multiplier"/>
-                    <field name="multiplier" string="Percentage" widget="percentage" options="{'digits': [16, 2]}"/>
+                    <field name="multiplier" widget="percentage"/>
                 </tree>
             </field>
         </record>
@@ -15,7 +15,7 @@
         <record id="condition_action" model="ir.actions.act_window">
             <field name="name">Conditions</field>
             <field name="res_model">trade_in_program.condition</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Create your first Condition
@@ -28,18 +28,22 @@
         <record id="cond_like_new" model="trade_in_program.condition">
             <field name="condition">Like New</field>
             <field name="multiplier">1.0</field>
+            <field name="sequence">10</field>
         </record>
         <record id="cond_good" model="trade_in_program.condition">
             <field name="condition">Good</field>
             <field name="multiplier">0.7</field>
+            <field name="sequence">20</field>
         </record>
         <record id="cond_damaged" model="trade_in_program.condition">
             <field name="condition">Damaged</field>
             <field name="multiplier">0.4</field>
+            <field name="sequence">30</field>
         </record>
         <record id="cond_broken" model="trade_in_program.condition">
             <field name="condition">Broken</field>
             <field name="multiplier">0.1</field>
+            <field name="sequence">40</field>
         </record>
     </data>
 </odoo>

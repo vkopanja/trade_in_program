@@ -5,18 +5,19 @@
             <field name="name">trade_in_program.trade_in.tree</field>
             <field name="model">trade_in_program.trade_in</field>
             <field name="arch" type="xml">
-                <tree decoration-success="status == 'accepted'" decoration-danger="status == 'rejected'">
+                <tree decoration-success="state == 'approved'" decoration-danger="state == 'rejected'">
                     <field name="reference"/>
-                    <field name="partner_id"/>
-                    <field name="partner_email"/>
+                    <field name="customer_name"/>
+                    <field name="customer_email"/>
+                    <field name="partner_id" optional="hide"/>
                     <field name="device_id"/>
                     <field name="condition_id"/>
                     <field name="offer_value"/>
-                    <field name="status" widget="badge"/>
+                    <field name="state" widget="badge"/>
                     <button name="action_approve" type="object" string="Approve" icon="fa-check"
-                            attrs="{'invisible': [('status', '!=', 'new')]}"/>
+                            attrs="{'invisible': [('state', '!=', 'new')]}"/>
                     <button name="action_reject" type="object" string="Reject" icon="fa-times"
-                            attrs="{'invisible': [('status', '!=', 'new')]}"/>
+                            attrs="{'invisible': [('state', '!=', 'new')]}"/>
                 </tree>
             </field>
         </record>
@@ -28,10 +29,10 @@
                 <form>
                     <header>
                         <button name="action_approve" type="object" string="Approve" class="btn-primary"
-                                attrs="{'invisible': [('status', '!=', 'new')]}"/>
+                                attrs="{'invisible': [('state', '!=', 'new')]}"/>
                         <button name="action_reject" type="object" string="Reject"
-                                attrs="{'invisible': [('status', '!=', 'new')]}"/>
-                        <field name="status" widget="statusbar"/>
+                                attrs="{'invisible': [('state', '!=', 'new')]}"/>
+                        <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -39,21 +40,23 @@
                         </div>
                         <group>
                             <group string="Customer">
-                                <field name="partner_id" attrs="{'readonly': [('status', '!=', 'new')]}"/>
-                                <field name="partner_email"/>
+                                <field name="partner_id" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                                <field name="customer_name" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                                <field name="customer_email" widget="email"
+                                       attrs="{'readonly': [('state', '!=', 'new')]}"/>
                             </group>
                             <group string="Device">
                                 <field name="device_id" options="{'no_create': True}"
-                                       attrs="{'readonly': [('status', '!=', 'new')]}"/>
+                                       attrs="{'readonly': [('state', '!=', 'new')]}"/>
                                 <field name="condition_id" options="{'no_create': True}" widget="radio"
-                                       attrs="{'readonly': [('status', '!=', 'new')]}"/>
+                                       attrs="{'readonly': [('state', '!=', 'new')]}"/>
                             </group>
                             <group string="Valuation">
                                 <field name="base_value" force_save="1"/>
                                 <field name="multiplier" widget="percentage" force_save="1"/>
                                 <field name="offer_value"/>
                             </group>
-                            <group string="Rejection" attrs="{'invisible': [('status', '!=', 'rejected')]}">
+                            <group string="Rejection" attrs="{'invisible': [('state', '!=', 'rejected')]}">
                                 <field name="rejection_reason" readonly="1" nolabel="1" colspan="2"/>
                             </group>
                         </group>
@@ -68,13 +71,15 @@
             <field name="arch" type="xml">
                 <search>
                     <field name="reference"/>
+                    <field name="customer_name"/>
+                    <field name="customer_email"/>
                     <field name="partner_id"/>
                     <field name="device_id"/>
-                    <filter name="filter_new" string="New" domain="[('status', '=', 'new')]"/>
-                    <filter name="filter_accepted" string="Accepted" domain="[('status', '=', 'accepted')]"/>
-                    <filter name="filter_rejected" string="Rejected" domain="[('status', '=', 'rejected')]"/>
+                    <filter name="filter_new" string="New" domain="[('state', '=', 'new')]"/>
+                    <filter name="filter_approved" string="Approved" domain="[('state', '=', 'approved')]"/>
+                    <filter name="filter_rejected" string="Rejected" domain="[('state', '=', 'rejected')]"/>
                     <group expand="0" string="Group By">
-                        <filter name="group_by_status" string="Status" context="{'group_by': 'status'}"/>
+                        <filter name="group_by_state" string="Status" context="{'group_by': 'state'}"/>
                         <filter name="group_by_device" string="Device" context="{'group_by': 'device_id'}"/>
                     </group>
                 </search>
