@@ -19,35 +19,55 @@
                                  t-esc="error_message"/>
                             <form action="/trade-in/submit" id="trade_in_form" method="post" class="mt-3">
                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <input type="hidden" name="submission_token" t-att-value="submission_token"/>
 
                                 <div class="mb-3 col-lg-8">
                                     <label class="form-label">Customer Name</label>
-                                    <input type="text" name="customer_name" class="form-control" required="required"/>
+                                    <input type="text" name="customer_name" required="required"
+                                           t-att-value="form_values.get('customer_name')"
+                                           t-att-maxlength="max_name_length"
+                                           t-attf-class="form-control #{'is-invalid' if form_errors.get('customer_name') else ''}"/>
+                                    <div t-if="form_errors.get('customer_name')" class="invalid-feedback"
+                                         t-esc="form_errors['customer_name']"/>
                                 </div>
 
                                 <div class="mb-3 col-lg-8">
                                     <label class="form-label">Customer Email</label>
-                                    <input type="email" name="customer_email" class="form-control" required="required"/>
+                                    <input type="email" name="customer_email" required="required"
+                                           t-att-value="form_values.get('customer_email')"
+                                           t-attf-class="form-control #{'is-invalid' if form_errors.get('email') else ''}"/>
+                                    <div t-if="form_errors.get('email')" class="invalid-feedback"
+                                         t-esc="form_errors['email']"/>
                                 </div>
 
                                 <div class="mb-3 col-lg-8">
                                     <label class="form-label">Device</label>
-                                    <select name="device_id" class="form-select" required="required">
+                                    <select name="device_id" required="required"
+                                            t-attf-class="form-select #{'is-invalid' if form_errors.get('invalid') else ''}">
                                         <option value="">Select a device</option>
                                         <t t-foreach="devices" t-as="d">
-                                            <option t-att-value="d.id" t-esc="d.model_name"/>
+                                            <option t-att-value="d.id"
+                                                    t-att-selected="str(d.id) == form_values.get('device_id')"
+                                                    t-esc="d.model_name"/>
                                         </t>
                                     </select>
+                                    <div t-if="form_errors.get('invalid')" class="invalid-feedback"
+                                         t-esc="form_errors['invalid']"/>
                                 </div>
 
                                 <div class="mb-3 col-lg-8">
                                     <label class="form-label">Condition</label>
-                                    <select name="condition_id" class="form-select" required="required">
+                                    <select name="condition_id" required="required"
+                                            t-attf-class="form-select #{'is-invalid' if form_errors.get('invalid') else ''}">
                                         <option value="">Select a condition</option>
                                         <t t-foreach="conditions" t-as="c">
-                                            <option t-att-value="c.id" t-esc="c.condition"/>
+                                            <option t-att-value="c.id"
+                                                    t-att-selected="str(c.id) == form_values.get('condition_id')"
+                                                    t-esc="c.condition"/>
                                         </t>
                                     </select>
+                                    <div t-if="form_errors.get('invalid')" class="invalid-feedback"
+                                         t-esc="form_errors['invalid']"/>
                                 </div>
 
                                 <div class="mb-3 col-lg-8">

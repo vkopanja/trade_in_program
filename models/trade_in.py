@@ -20,7 +20,8 @@ class TradeIn(models.Model):
     _description = 'Trade-In model for managing trade-in offers and requests'
     _rec_name = 'reference'
     _sql_constraints = [
-        ('reference_unique', 'unique(reference)', 'Reference must be unique')
+        ('reference_unique', 'unique(reference)', 'Reference must be unique'),
+        ('submission_token_unique', 'unique(submission_token)', 'This form has already been submitted'),
     ]
 
     partner_id = fields.Many2one('res.partner', string='Customer', required=True)
@@ -40,6 +41,8 @@ class TradeIn(models.Model):
         string='Status',
     )
     rejection_reason = fields.Text(string='Rejection Reason')
+    # One-time token of the website form that created the request, so a resubmit doesn't create a duplicate
+    submission_token = fields.Char(readonly=True, copy=False)
 
     @api.onchange('device_id', 'condition_id')
     def _onchange_inputs(self):
