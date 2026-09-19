@@ -1,14 +1,17 @@
 <odoo>
     <data>
-        <menuitem id="trade_in_menu_root" name="Trade-In"/>
+        <menuitem id="trade_in_menu_root" name="Trade-In" groups="group_trade_in_user"/>
 
-        <menuitem id="trade_in_menu_list_condition" name="Conditions"
-                  parent="trade_in_menu_root" action="condition_action"/>
-
-        <menuitem id="trade_in_menu_list_device" name="Devices"
-                  parent="trade_in_menu_root" action="device_action"/>
-
-        <menuitem id="trade_in_menu_list_trade_in" name="Trade-Ins"
+        <menuitem id="trade_in_menu_list_trade_in" name="Trade-In Requests" sequence="10"
                   parent="trade_in_menu_root" action="trade_in_action"/>
+
+        <menuitem id="trade_in_menu_config" name="Configuration" sequence="100"
+                  parent="trade_in_menu_root" groups="group_trade_in_manager"/>
+
+        <menuitem id="trade_in_menu_list_device" name="Devices" sequence="10"
+                  parent="trade_in_menu_config" action="device_action"/>
+
+        <menuitem id="trade_in_menu_list_condition" name="Conditions" sequence="20"
+                  parent="trade_in_menu_config" action="condition_action"/>
     </data>
 </odoo>

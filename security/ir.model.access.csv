@@ -1,5 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_trade_in_program_condition,trade_in_program.condition all,model_trade_in_program_condition,base.group_user,1,1,1,1
-access_trade_in_program_device,trade_in_program.device all,model_trade_in_program_device,base.group_user,1,1,1,1
-access_trade_in_program_trade_in,trade_in_program.trade_in all,model_trade_in_program_trade_in,base.group_user,1,1,1,1
-access_trade_in_program_reject_wizard,trade_in_program.reject.wizard,model_trade_in_program_reject_wizard,base.group_user,1,1,1,0
+access_trade_in_device_user,trade_in_program.device user,model_trade_in_program_device,group_trade_in_user,1,0,0,0
+access_trade_in_device_manager,trade_in_program.device manager,model_trade_in_program_device,group_trade_in_manager,1,1,1,1
+access_trade_in_condition_user,trade_in_program.condition user,model_trade_in_program_condition,group_trade_in_user,1,0,0,0
+access_trade_in_condition_manager,trade_in_program.condition manager,model_trade_in_program_condition,group_trade_in_manager,1,1,1,1
+access_trade_in_request_user,trade_in_program.trade_in user,model_trade_in_program_trade_in,group_trade_in_user,1,1,1,0
+access_trade_in_request_manager,trade_in_program.trade_in manager,model_trade_in_program_trade_in,group_trade_in_manager,1,1,1,1
+access_trade_in_reject_wizard_user,trade_in_program.reject.wizard user,model_trade_in_program_reject_wizard,group_trade_in_user,1,1,1,0

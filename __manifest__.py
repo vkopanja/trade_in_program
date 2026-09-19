@@ -22,6 +22,7 @@
 
     # always loaded
     'data': [
+        'security/trade_in_security.xml',
         'security/ir.model.access.csv',
         'data/ir_sequence_data.xml',
         'wizard/trade_in_reject_wizard_views.xml',
